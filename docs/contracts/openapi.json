@@ -1,0 +1,141 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "POC API",
+    "description": "Base POC REST API — hexagonal architecture with JWT authentication",
+    "version": "0.0.1-SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Local development"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Register and login endpoints"
+    }
+  ],
+  "paths": {
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Register a new user",
+        "operationId": "register",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RegisterRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or duplicate username/email",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Authenticate and receive a JWT token",
+        "operationId": "login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authentication successful",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegisterRequest": {
+        "type": "object",
+        "required": ["username", "email", "password"],
+        "properties": {
+          "username": { "type": "string", "minLength": 3, "maxLength": 50 },
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string", "minLength": 8 }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["username", "password"],
+        "properties": {
+          "username": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string" }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "username": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "role": { "type": "string" }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    { "bearerAuth": [] }
+  ]
+}
