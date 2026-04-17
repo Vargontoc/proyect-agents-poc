@@ -2,16 +2,16 @@
 Set up the base Spring Boot project strucutre with hexagonal architecture, Liquibase migrations, JWT authentication and Docker support
 
 ## Status
-status: active
+status: closed
 started_at: 2026-04-16
-closed_at:
+closed_at: 2026-04-17
 blocked_by:
 waiting_for:
 
 ## Tasks
-- [ ] Generate Spring Boot 3 project with required dependencies
-- [ ] Configure PostgreSQL datasource via environment variables
-- [ ] Create layared Dockerfile
+- [x] Generate Spring Boot 3 project with required dependencies
+- [x] Configure PostgreSQL datasource via environment variables
+- [x] Create layared Dockerfile
 
 ## Risks
 - None
