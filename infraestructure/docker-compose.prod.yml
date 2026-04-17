@@ -1,0 +1,16 @@
+services:
+  db:
+    ports: []
+  backend:
+    build:
+      target: production
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    restart: always
+
+  frontend:
+    build:
+      target: production
+    ports:
+      - "80:80"
+    restart: always
